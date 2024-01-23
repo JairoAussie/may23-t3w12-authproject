@@ -1,5 +1,7 @@
 const express = require("express");
 
+const {User} = require('../models/UserModel');
+
 const router = express.Router();
 
 //get all the users from the DB
@@ -21,7 +23,8 @@ const router = express.Router();
  * ]
  */
 router.get("/", async (request, response) =>{
-    return null
+    let result = await User.find();
+    response.json({result});
 })
 
 // get a user by id from the DB
@@ -41,7 +44,9 @@ router.get("/:id", async (request, response) => {
 // request.body = {username: "admin", password:"password1"}
 //respond with {jwt: ef23rf24f23e23efqegt24g2wegfq23}
 router.post("/signup", async (request, response) => {
-    return null;
+    
+    let newUser = await User.create(request.body).catch(error => error);
+    response.json(newUser);
 })
 
 //log in the user
@@ -64,3 +69,5 @@ router.get("/verify", async(request, response) =>{
 router.get("/regenerate", async(request, response) =>{
     return null;
 })
+
+module.exports = router;
